@@ -1,71 +1,80 @@
 *{
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
+    font-family: 'Source Sans Pro', sans-serif;
 }
-.wrapper{
-	width: 1170px;
-	margin: auto;
+.header{
+    min-height: 100vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(130, 139, 175, 0.7),rgba(130, 139, 175, 0.7)),url(images/valentines.jpeg);
+    background-position: center;
+    background-size: cover;
+    position: relative;
 }
-header{
-	background: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url("valentines.jpeg");
-	height: 100vh;
-	-webkit-background-size:cover;
-	background-size:cover;
-	background-position: center center;
-	position: relative;
+nav{
+    display: flex;
+    padding: 1% 1%;
+    justify-content: space-between;
+    align-items: start;
 }
-.nav-area{
-	float: right;
-	list-style: none;
-	margin-top: 30px;
+.nav-links{
+    flex: 1;
+    text-align: right;
 }
-.nav-area li{
-	display: inline-block;
+.nav-links ul li{
+    list-style: none;
+    display: inline-block;
+    padding: 8px 5px;
+    position: sticky;
 }
-.nav-area li a{
-	color: #fff;
-	text-decoration: none;
-	padding: 5px 20px;
-	font-family:poppins;
-	text-transform: uppercase;
-	font-size: 14px;
-	border: 1px solid #fff;
+.nav-links ul li a{
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
 }
-.nav-area li a:hover{
-	background: #fff;
-	color: #000;
+.nav-links ul li::after{
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: #e96250;
+    display: block;
+    margin: auto;
 }
-.logo img{
-	width: 200px;
-	float: left;
-	height: auto;
-	margin-top: 30px;
+.text-box{
+    width: 90%;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
 }
-.welcome-text{
-	position: absolute;
-	width: 600px;
-	height: 300px;
-	margin: 20% 30%;
-	text-align: center;
+.text-box h1{
+    font-size: 75px;
 }
-.welcome-text h1{
-	text-align: center;
-	color: #fff;
-	text-transform: uppercase;
-	font-size: 60px;
+.login{
+    flex: 1;
 }
-.welcome-text a{
-	border: 1px solid #fff;
-	padding: 10px 25px;
-	text-decoration: none;
-	text-transform: uppercase;
-	font-size: 14px;
-	margin-top: 20px;
-	display: inline-block;
-	color: #fff;
+.login ul li{
+    list-style: none;
+    display: inline-block;
+    padding: 8px 8px;
+    position: relative;
 }
-.welcome-text a:hover{
-	background: #fff;
-	color: #333;
-
+.login ul li a{
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+}
+.login ul li::after{
+    content: '';
+    width: 0%;
+    height: 2px;
+    background: #e96250;
+    display: block;
+    margin: auto;
+    transition: 0.5s;
+}
+.login ul li:hover::after{
+    width: 100%;
 }
