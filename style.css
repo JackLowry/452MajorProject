@@ -6,7 +6,7 @@
 .header{
     min-height: 100vh;
     width: 100%;
-    background-image: linear-gradient(rgba(130, 139, 175, 0.7),rgba(130, 139, 175, 0.7)),url(images/valentines.jpeg);
+    background-image: linear-gradient(rgba(178, 186, 218, 0.7),rgba(178, 186, 218, 0.7)),url(images/valentines.jpeg);
     background-position: center;
     background-size: cover;
     position: relative;
@@ -24,7 +24,7 @@ nav{
 .nav-links ul li{
     list-style: none;
     display: inline-block;
-    padding: 8px 5px;
+    padding: 8px 10px;
     position: sticky;
 }
 .nav-links ul li a{
@@ -77,4 +77,56 @@ nav{
 }
 .login ul li:hover::after{
     width: 100%;
+}
+
+/*about me page*/
+
+.sub-header{
+    height: 100vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(178, 186, 218, 0.7),rgba(178, 186, 218, 0.7)),url(images/background.jpg);
+    background-position: center;
+    background-size: cover;
+	background-attachment: fixed;
+    color: #fff;
+}
+.title-about-us{
+	color: #fff;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+	padding-bottom: 20px;
+	font-size: 30px;
+}
+.content{
+	color: #fff;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+	font-size: 25px;
+	padding-top: 100px;
+}
+.content p{
+	padding-left: 20%;
+	padding-right: 20%;
+	padding-bottom: 1%;
+}
+.content a{
+	display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 10px 20px;
+    font-size: 20px;
+    background: transparent;
+    position: relative;
+    cursor: pointer;
+}
+.content a:hover{
+	border: 1px solid #d600cb;
+    background: #ff9cff;
+    transition: 1s;
 }
