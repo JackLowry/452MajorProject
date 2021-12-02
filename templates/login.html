@@ -1,0 +1,17 @@
+<center><h1>Customer Login</h1></center>
+
+<!--<h2>{{ name }}</h2>-->
+
+<center><form action= "{{ url_for('login') }}" method = "post">
+    <label for="UserName">Username</label>    
+        <input type="text" id = "UserName" name="UserName">
+    <br>
+    <label for="Password">Password</label> 
+        <input type="text" id = "Password"  name="Password">
+    <br>
+        <input type="submit" value="Enter">
+    <br>
+    <p><a href="{{ url_for('registration_form') }}">Register Here!</a></p>
+    
+
+</form></center> 
