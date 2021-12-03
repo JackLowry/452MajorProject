@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang ="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Website Homepage Design with html and css</title>
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+</head>
+<body>
+	<header>
+	</div>
+	<u1 class="nav-area">
+		<li><a href="{{ url_for('login') }}">Home</a></li>
+		<li><a href="{{ url_for('about_Us') }}">About</a></li>
+		<li><a href="{{ url_for('services_page') }}">Services</a></li>
+		<li><a href="{{ url_for('contact_page') }}">Contact</a></li>
+	</u1>
+		<div class ="welcome-text">
+			<h1>RUDownBad?</h1>
+            <b>About Us Page</b> 
+			<p><a href="{{ url_for('login') }}">Go Back To Home</a>
+		</div>
+	</header>
+</body>
+</html>

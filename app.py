@@ -1,7 +1,7 @@
 #render_template allows for other files to be called in return statements
 from flask import Flask, render_template, request, url_for, redirect#import flask into this file and render_template
 import random
-import googlemaps
+
 import json
 from datetime import datetime
 import mysql.connector #import SQL
@@ -33,7 +33,7 @@ def optimize_delivery(curr_r, curr_c):
     return total_time
 
 
-mydb = mysql.connector.connect(host = "localhost", user = "root", passwd = "root", database ="FreshFood_Database") #connect to database, bad practive since problems with multiple connecctions and errors can occur, but fine for single user only
+mydb = mysql.connector.connect(host = "localhost", user = "root", passwd = "3072", database ="RUDownBad_Database") #connect to database, bad practive since problems with multiple connecctions and errors can occur, but fine for single user only
 mycursor = mydb.cursor()
 
 
@@ -48,24 +48,38 @@ print(__name__)
 
 @app.route('/', methods=['GET', 'POST']) #someone has visited base url and we have to provide information
 def login(): #return some object to be displayed to the user | general python syntax for defining a function
-    if request.method == 'POST':
-        name = request.form.get('UserName')
-        password = request.form.get('Password')
-        mycursor.execute("SELECT username, user_password, User_ID FROM User_Profile WHERE username = %s and user_password = %s;", (name,password))
-        result = mycursor.fetchone()
-        global currentUser
-        if (result == None):
-            return redirect(url_for('login'))
-        if(name == result[0] and password == result[1]):
-            currentUser = result[2]
-            return redirect(url_for('dropdown'))
-        else:
-            return redirect(url_for('login'))
     return render_template('home.html') #name='Irfan'
 
-@app.route('/about')
-def about(): #name of function and name of route do not have to match
-    return 'This is a url shortener'
+
+
+@app.route('/login_page')
+def login_page(): #name of function and name of route do not have to match
+    return render_template('login.html')
+
+@app.route('/services')
+def services_page(): #name of function and name of route do not have to match
+    return render_template('services.html')
+
+@app.route('/contact')
+def contact_page(): #name of function and name of route do not have to match
+    return render_template('contact.html')
+
+@app.route('/about_Us')
+def about_Us(): #name of function and name of route do not have to match
+    return render_template('about_Us.html')
+
+@app.route('/select')
+def select(): #name of function and name of route do not have to match
+    return render_template('select.html')
+
+@app.route('/filter')
+def filter(): #name of function and name of route do not have to match
+    return render_template('filter.html')
+
+@app.route('/chat')
+def chat(): #name of function and name of route do not have to match
+    return render_template('chat.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def registration_form():

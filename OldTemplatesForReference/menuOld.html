@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<body>
+    
+
+
+
+
+    <center><h1>Choose Your Dish Quantities</h1></center>
+
+	<center><form method = "post" action="{{ url_for('menu') }}">
+
+		{%for dish in content %}
+            <label for="{{dish}}">{{dish}}:</label><br>
+            <input type="text" id="{{dish}}" name="{{dish}}"><br>
+		{% endfor %}
+        
+        <br>
+
+        <button type="order">Order!</button>
+        <br>
+        <p><a href="{{ url_for('dropdown') }}">Go Back!</a></p>
+    </form>
+
+    <center><h1>Menu</h1></center>
+
+
+
+
+{% block content %}
+    <p>
+      <table class="table table-striped">
+      <thead>
+      <tr>
+      <th>Dish Name and Price</th>
+      </tr>
+      </thead>
+      <tbody>
+    {% for price in prices%}
+      <tr>
+      <td>{{price}}</td>
+      </tr>
+    {% endfor %}
+      </tbody>
+      </table>
+    </p>
+
+{% endblock %}
+
+
+
+</html>
+
+
