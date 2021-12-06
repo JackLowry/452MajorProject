@@ -86,7 +86,7 @@ def about_Us(): #name of function and name of route do not have to match
 def select(): #name of function and name of route do not have to match
     return render_template('select.html')
 
-@app.route('/filter')
+@app.route('/filter', methods=['GET', 'POST'])
 def filter(): #name of function and name of route do not have to match
     return render_template('filter.html')
 
