@@ -34,7 +34,7 @@ def optimize_delivery(curr_r, curr_c):
     return total_time
 
 
-mydb = mysql.connector.connect(host = "localhost", user = "root", passwd = "3072", database ="RUDownBad_Database") #connect to database, bad practive since problems with multiple connecctions and errors can occur, but fine for single user only
+mydb = mysql.connector.connect(host = "localhost", user = "root", passwd = "", database ="RUDownBad_Database") #connect to database, bad practive since problems with multiple connecctions and errors can occur, but fine for single user only
 mycursor = mydb.cursor()
 
 
@@ -88,6 +88,29 @@ def select(): #name of function and name of route do not have to match
 
 @app.route('/filter', methods=['GET', 'POST'])
 def filter(): #name of function and name of route do not have to match
+    if request.method == 'POST':
+        age = request.form.get('age')
+        print(age)
+        if age == '':
+            age = 'age'
+        print(age)
+        campus = request.form.get('Campus')
+        print(campus)
+        gender = request.form.get('gender')
+        print(gender)
+        year = request.form.get('year')
+        print(year)
+        if year == 'Any':
+            year = 'year'
+        sex = request.form.get('sexual_orientation')
+        print(sex)
+        school = request.form.get('school')
+        print(school)
+        sql_select_query = 'SELECT username, campus, residence, age, gender year, sexual_orientation, major, bio, school FROM user_profile WHERE age = ' + str(age) + ' and campus = "' + str(campus) + '" and gender = "' + str(gender) + '" and year = "' + str(year) + '" and sexual_orientation = "' + str(sex) + '" and school = "' + str(school) + '" ORDER BY RAND() LIMIT1;'
+        print(sql_select_query)
+        mycursor.execute(sql_select_query)
+        result = mycursor.fetchall()
+        print(result)
     return render_template('filter.html')
 
 @app.route('/chat')
@@ -99,31 +122,31 @@ def chat(): #name of function and name of route do not have to match
 def registration_form():
     if request.method == 'POST':
         name = request.form.get('username')
-        #print(name)
+        print(name)
         password = request.form.get('password')
-        #print(password)
+        print(password)
         age = request.form.get('age')
-        #print(age)
+        print(age)
         campus = request.form.get('Campus')
-        #print(campus)
+        print(campus)
         residence = request.form.get('Residence_Hall')
-        #print(residence)
+        print(residence)
         gender = request.form.get('gender')
-        #print(gender)
+        print(gender)
         year = request.form.get('year')
-        #print(year)
+        print(year)
         orientation = request.form.get('sexual_orientation')
-        #print(orientation)
+        print(orientation)
         major = request.form.get('major')
-        #print(major)
+        print(major)
         school = request.form.get('school')
-        #print(school)
+        print(school)
         bio = request.form.get('bio')
-        #print(bio)
+        print(bio)
         userID = random.randint(0, 1000000)
-        #print(userID)
+        print(userID)
         img = request.form.get('profile_picture')
-        #print(img)
+        print(img)
         imagefile = request.files.get('profile_picture', '')
         mycursor.execute("INSERT INTO User_Profile(User_ID,username,user_password,campus,residence,age,gender,year,sexual_orientation, major, bio, school, profile_picture ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
         (userID, name, password, campus, residence, age, gender, year, orientation,major, bio, school, imagefile))
