@@ -16,7 +16,69 @@
 	</u1>
 		<div class ="welcome-text">
 			<h1>RUDownBad?</h1>
-            <b>Put the Selection of Filter Parameters Form Here</b> 
+            <b>
+				<center><form action= "{{ url_for('filter') }}" method="post">
+					<label for="age">Age:</label><br>
+					<input type="number" id="age" name="age"><br>
+			
+					<label for="Campus">Home Campus:</label>
+					<select name= "Campus"> Campus:
+						<option value="Busch">Busch</option>
+						<option value="College Avenue">College Avenue</option>
+						<option value="Cook">Cook</option>
+						<option value="Douglas">Douglas</option>
+						<option value="Livingston">Livingston</option>
+						<option value="Commuter">Commuter</option>
+					</select>
+					<br>
+					<br>
+					<label for="gender"> Gender:</label>
+					<select name= "gender"> Gender:
+						<option value="Male">Male</option>
+						<option value="Female">Female</option>
+						<option value="Other">Other</option>
+					</select>
+					<br>
+					<br>
+					<label for="year"> Year:</label>
+					<select name= "year"> Year:
+						<option value="Any">Any</option>
+						<option value="Freshman">Freshman</option>
+						<option value="Sophomore">Sophomore</option>
+						<option value="Junior">Junior</option>
+						<option value="Senior">Senior</option>
+						<option value="Graduate_Student">Graduate Student</option>
+						<option value="Staff">Staff</option>
+					</select>
+					<br>
+					<br>
+					<label for="sexual_orientation"> Sexual Orientation:</label>
+					<select name= "sexual_orientation"> Sexual Orientation:
+						<option value="Heterosexual">Heterosexual</option>
+						<option value="Homosexual">Homosexual</option>
+						<option value="Bisexual">Bisexual</option>
+					</select>
+					<br>
+					<br>
+					<label for="school"> School:</label>
+					<select name= "school">  School:
+						<option value="School_of_Planning_and_Public_Policy">School of Planning and Public Policy</option>
+						<option value="Business_School">Business School</option>
+						<option value="School_of_Engineering">School of Engineering</option>
+						<option value="School_of_Arts_and_Sciences">School of Arts and Sciences</option>
+						<option value="School_of_Pharmacy">School of Pharmacy</option>
+						<option value="School_of_Environmental_and_Biological_Studies">School of Environmental and Biological Studies</option>
+						<option value="School_of_Social_Work">School of Social Work</option>
+						<option value="School_of_Management_and_Labor_Relations">School of Management and Labor Relations</option>
+						<option value="Mason_Gross_School_of_the_Arts"> Mason Gross School of the Arts</option>
+						<option value="School_of_Graduate_Studies">School of graduate Studies</option>
+						<option value="Robert_Wood_Johnson_Medical_School">Robert Wood Johnson Medical School</option>
+						<option value="School_of_Nursing">School of Nursing</option>
+					</select>
+					<button type="submit">Submit Here!</button>
+			
+				</form><center>
+			</b> 
             <p><a href="{{ url_for('select') }}">Go Back To Previous Page</a>
 		</div>
 	</header>
