@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Website Homepage Design with html and css</title>
-	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/profiles.css') }}">
 </head>
 <body>
 	<header>
@@ -17,20 +17,25 @@
 		<div class ="welcome-text">
 			<h1>Mingle?</h1>
             <b>
+                <img src="/static/profile.png" alt="profile.png" width="256" height="256">
                 {% for text in content %}
 
-               <h4><b>Name: {{ text[0] }}</b></h4>
-               <p>Campuus: {{ text[1]}}</p>
-               <p>Residence Hall: {{ text[2] }}</p>
-               <p>Age: {{ text[3] }}</p>
-               <p>Identifies As: {{ text[4] }}</p>
-               <p>year: {{ text[5] }}</p>
-               <p>Sexual Orientation: {{ text[6] }}</p>
-               <p>Major: {{ text[7] }}</p>
-               <p>Biography: {{ text[8] }}</p>
+               <h4><b style="color:white;">Name: {{ text[0] }}</b></h4>
+               <p style="color:white;">Campuus: {{ text[1]}}</p>
+               <p style="color:white;">Residence Hall: {{ text[2] }}</p>
+               <p style="color:white;">Age: {{ text[3] }}</p>
+               <p style="color:white;">Identifies As: {{ text[4] }}</p>
+               <p style="color:white;">Year: {{ text[5] }}</p>
+               <p style="color:white;">Sexual Orientation: {{ text[6] }}</p>
+               <p style="color:white;">Major: {{ text[7] }}</p>
+               <p style="color:white;">Biography: {{ text[8] }}</p>
+               <br>
+               <p><a href="{{ url_for('login_page') }}">Mingle!</a>
+                <p><a href="{{ url_for('registration_form') }}">Pass!</a>
                 </div>
                </div>
                {% endfor %}
+
             </b> 
 
 		</div>

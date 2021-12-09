@@ -10,7 +10,7 @@
 
 
 
-    <center><form action= "{{ url_for('registration_form') }}" method="post" 
+    <center><form action= "{{ url_for('registration_form') }}" method="post" enctype="multipart/form-data" >
         
         <label for="username">Name:</label><br>
         <input type="text" id="username" name="username"><br>
@@ -87,7 +87,7 @@
         <input type="text" id="bio" name="bio"><br>
 
         <label for="profile_picture"> Upload User Profile Picture (jpg or png only):</label><br>
-        <input type="file" name="profile_picture" accept="image/png, image/jpeg" />
+        <input type="file" id = "profile_picture "name="profile_picture" accept="image/png, image/jpeg" />
         <br>
         <br>
         <button type="submit">Submit Here!</button>
