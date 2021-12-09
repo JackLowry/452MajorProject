@@ -7,8 +7,13 @@ import json
 from datetime import datetime
 import mysql.connector #import SQL
 from math import ceil
+import base64
 
 
+def write_file(data, filename):
+    # Convert binary data to proper format and write it on Hard Disk
+    with open("static/profile.png", 'wb') as file:
+        file.write(data)
 
 def optimize_delivery(curr_r, curr_c):
 
@@ -150,8 +155,9 @@ def profile_page(): #name of function and name of route do not have to match
     mycursor.execute(sql_select_query)
     result = mycursor.fetchall()
     profile_picture = result[0][0]
-    print(profile_picture)
-    return render_template('profiles.html', content = profileInfo )
+    profile_picture = write_file(profile_picture, "photo")
+    # print(profile_picture)
+    return render_template('profiles.html', content = profileInfo, picture = profile_picture)
 
 
 
@@ -187,12 +193,15 @@ def registration_form():
         print(bio)
         userID = random.randint(0, 1000000)
         print(userID)
-        img = request.form.get('profile_picture')
-        print(img)
-        imagefile = request.files.get('profile_picture', '')
-        print(imagefile)
+        if 'profile_picture' not in request.files:
+            print('no file recieved')
+        # img = request.form.get('profile_picture')
+        # print(img)
+        # imagefile = request.files.get('profile_picture', '')
+        # print(imagefile)
+        imagefile2 = request.files['profile_picture'].read()
         mycursor.execute("INSERT INTO User_Profile(User_ID,username,user_password,campus,residence,age,gender,year,sexual_orientation, major, bio, school, profile_picture ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-        (userID, name, password, campus, residence, age, gender, year, orientation,major, bio, school, imagefile))
+        (userID, name, password, campus, residence, age, gender, year, orientation,major, bio, school, imagefile2))
         mydb.commit()
         return redirect(url_for('login_page'))
     return render_template('registration_form.html')
