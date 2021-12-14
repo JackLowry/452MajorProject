@@ -16,7 +16,15 @@
 	</u1>
 		<div class ="welcome-text">
 			<h1>RUDownBad?</h1>
-            <b>Chat Place Holder for sprint 3</b> 
+			<p style="color:white;"> Select User to Chat With From Matched Users</p>
+			{% for text in content %}
+
+			<h4><b style="color:white;">Your ID: {{ text[0] }}</b></h4>
+			<p style="color:white;">Matched User ID: {{ text[1]}}</p>
+
+			
+			{% endfor %}
+
             <p><a href="{{ url_for('select') }}">Go Back To Previous Page</a>
 		</div>
 	</header>

@@ -30,8 +30,11 @@
                <p style="color:white;">Major: {{ text[7] }}</p>
                <p style="color:white;">Biography: {{ text[8] }}</p>
                <br>
-               <p><a href="{{ url_for('login_page') }}">Mingle!</a>
-                <p><a href="{{ url_for('registration_form') }}">Pass!</a>
+               <form action= "{{ url_for('profile_page') }}" method="post">
+                Mingle or Pass?:
+                <button name="action" type="submit" value="mingle">Mingle!</button>
+                <button name="action" type="submit" value="pass">Pass!</button>
+                </form> 
                 </div>
                </div>
                {% endfor %}
