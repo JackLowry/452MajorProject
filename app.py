@@ -146,9 +146,40 @@ def filter(): #name of function and name of route do not have to match
 
 @app.route('/profiles',  methods=['GET', 'POST'])
 def profile_page(): #name of function and name of route do not have to match
-    global globalCurrInfo
+    if request.method == 'POST':
+        action = request.form.get('action')
+        if (action == 'mingle'):
+            global globalCurrOtherUserID
+            global currentUser
+            mycursor.execute("INSERT INTO Likes(User_ID,User_ID2) VALUES (%s,%s)",
+            (currentUser, globalCurrOtherUserID))
+            mydb.commit()
+        global globalCampus 
+        global globalYear 
+        global globalSex 
+        global globalSchool
+        global globalGender 
+        global globalCurrInfo 
+        campus = globalCampus
+        gender = globalGender
+        sex = globalSex
+        school = globalSchool
+        gender = globalGender
+        year = globalYear
+        sql_select_query = 'SELECT username, campus, residence, age, gender, year, sexual_orientation, major, bio, school, User_ID FROM user_profile WHERE campus = "' + str(campus) + '" and gender = "' + str(gender) + '" and year = "' + str(year) + '" and sexual_orientation = "' + str(sex) + '" and school = "' + str(school) + '" ORDER BY RAND() LIMIT 1;'
+        print(sql_select_query)
+        mycursor.execute(sql_select_query)
+        result = mycursor.fetchall()        
+        global globalCurrInfo 
+        globalCurrInfo = result
+        OtherID = None
+        OtherID = result[0][10]
+        print(OtherID)
+        
+        globalCurrOtherUserID = OtherID
+        return redirect(url_for('profile_page'))  
     profileInfo = globalCurrInfo
-    global globalCurrOtherUserID
+
     currID = globalCurrOtherUserID
     sql_select_query = 'SELECT profile_picture FROM user_profile WHERE User_ID = "' + str(currID) + '" ;'
     print(sql_select_query)
@@ -163,7 +194,13 @@ def profile_page(): #name of function and name of route do not have to match
 
 @app.route('/chat')
 def chat(): #name of function and name of route do not have to match
-    return render_template('chat.html')
+    global currentUser
+    currID = currentUser
+    sql_select_query = 'SELECT * from likes WHERE User_ID = "' + str(currID) + '" ;'
+    print(sql_select_query)
+    mycursor.execute(sql_select_query)
+    matches = mycursor.fetchall()
+    return render_template('chat.html', content = matches)
 
 
 @app.route('/register', methods=['GET', 'POST'])
