@@ -2,6 +2,7 @@
 from flask import Flask, render_template, request, url_for, redirect#import flask into this file and render_template
 import random
 
+import googlemaps
 import PIL
 import json
 from datetime import datetime
@@ -9,39 +10,27 @@ import mysql.connector #import SQL
 from math import ceil
 import base64
 
+def get_distance(person_1, person_2):
+
+    with open("api_key.txt") as f:
+        api_key = f.read()
+    gmaps = googlemaps.Client(key=api_key)
+
+    try:
+        ret_val = gmaps.directions(person_1, person_2, mode="driving")
+    except googlemaps.exceptions.ApiError:
+        return None
+    time = ret_val[0]["legs"][0]["duration"]["value"]
+    
+    return float(time)/60
 
 def write_file(data, filename):
     # Convert binary data to proper format and write it on Hard Disk
     with open("static/profile.png", 'wb') as file:
         file.write(data)
 
-def optimize_delivery(curr_r, curr_c):
 
-    with open("api_key.txt") as f:
-        api_key = f.read()
-    gmaps = googlemaps.Client(key=api_key)
-
-    deliverers = [(40.50488500478356, -74.4670101053852),
-    (40.523748244622425, -74.47182690442412),
-    (40.501203991220244, -74.41227952116414)]
-
-    min_time = float("inf")
-    best_d = -1
-    to_c = gmaps.directions(curr_r, curr_c, mode="driving")
-    total_time = to_c[0]["legs"][0]["duration"]["value"]
-    for i, d in enumerate(deliverers):
-        to_r = gmaps.directions(d, curr_r, mode="driving")
-        d_time = to_r[0]["legs"][0]["duration"]["value"]
-        print(d_time)
-        if d_time < min_time:
-            min_time = d_time
-            deliverers = i
-    print(total_time, min_time)
-    total_time = total_time + min_time
-    return total_time
-
-
-mydb = mysql.connector.connect(host = "localhost", user = "root", passwd = "3072", database ="RUDownBad_Database") #connect to database, bad practive since problems with multiple connecctions and errors can occur, but fine for single user only
+mydb = mysql.connector.connect(host = "localhost", user = "root", passwd = "root", database ="RUDownBad_Database") #connect to database, bad practive since problems with multiple connecctions and errors can occur, but fine for single user only
 mycursor = mydb.cursor()
 
 
@@ -53,9 +42,12 @@ globalYear = None
 globalSex = None
 globalSchool = None
 globalGender = None
-
+myLocation = None
+theirLocation = None
 globalCurrOtherUserID = None
 globalCurrInfo = None
+
+globalTravelTime = None
 
 app = Flask(__name__)
 
@@ -74,9 +66,11 @@ def login_page(): #name of function and name of route do not have to match
     if request.method == 'POST':
         name = request.form.get('UserName')
         password = request.form.get('Password')
-        mycursor.execute("SELECT username, user_password, User_ID FROM User_Profile WHERE username = %s and user_password = %s;", (name,password))
+        mycursor.execute("SELECT username, user_password, User_ID, residence FROM User_Profile WHERE username = %s and user_password = %s;", (name,password))
         result = mycursor.fetchone()
         global currentUser
+        global myLocation
+        myLocation = result[3]
         if (result == None):
             return redirect(url_for('login_page'))
         if(name == result[0] and password == result[1]):
@@ -112,12 +106,12 @@ def filter(): #name of function and name of route do not have to match
         year = request.form.get('year')
         print(year)
         if year == 'Any':
-            year = 'year'
+            year = '*'
         sex = request.form.get('sexual_orientation')
         print(sex)
         school = request.form.get('school')
         print(school)
-        sql_select_query = 'SELECT username, campus, residence, age, gender, year, sexual_orientation, major, bio, school, User_ID FROM user_profile WHERE campus = "' + str(campus) + '" and gender = "' + str(gender) + '" and year = "' + str(year) + '" and sexual_orientation = "' + str(sex) + '" and school = "' + str(school) + '" ORDER BY RAND() LIMIT 1;'
+        sql_select_query = 'SELECT username, campus, residence, age, gender, year, sexual_orientation, major, bio, school, User_ID FROM User_Profile WHERE campus = "' + str(campus) + '" and gender = "' + str(gender) + '" and year = "' + str(year) + '" and sexual_orientation = "' + str(sex) + '" and school = "' + str(school) + '" ORDER BY RAND() LIMIT 1;'
         print(sql_select_query)
         mycursor.execute(sql_select_query)
         result = mycursor.fetchall()
@@ -136,6 +130,8 @@ def filter(): #name of function and name of route do not have to match
         globalCurrInfo = result
         OtherID = None
         OtherID = result[0][10]
+        global theirLocation
+        theirLocation = result[0][2]
         print(OtherID)
         global globalCurrOtherUserID
         globalCurrOtherUserID = OtherID
@@ -146,6 +142,7 @@ def filter(): #name of function and name of route do not have to match
 
 @app.route('/profiles',  methods=['GET', 'POST'])
 def profile_page(): #name of function and name of route do not have to match
+    global theirLocation
     if request.method == 'POST':
         action = request.form.get('action')
         if (action == 'mingle'):
@@ -160,6 +157,7 @@ def profile_page(): #name of function and name of route do not have to match
         global globalSchool
         global globalGender 
         global globalCurrInfo 
+        global globalTravelTime
         campus = globalCampus
         gender = globalGender
         sex = globalSex
@@ -167,7 +165,6 @@ def profile_page(): #name of function and name of route do not have to match
         gender = globalGender
         year = globalYear
         sql_select_query = 'SELECT username, campus, residence, age, gender, year, sexual_orientation, major, bio, school, User_ID FROM user_profile WHERE campus = "' + str(campus) + '" and gender = "' + str(gender) + '" and year = "' + str(year) + '" and sexual_orientation = "' + str(sex) + '" and school = "' + str(school) + '" ORDER BY RAND() LIMIT 1;'
-        print(sql_select_query)
         mycursor.execute(sql_select_query)
         result = mycursor.fetchall()        
         global globalCurrInfo 
@@ -175,11 +172,12 @@ def profile_page(): #name of function and name of route do not have to match
         OtherID = None
         OtherID = result[0][10]
         print(OtherID)
-        
+        theirLocation = result[0][2]
+
         globalCurrOtherUserID = OtherID
         return redirect(url_for('profile_page'))  
     profileInfo = globalCurrInfo
-
+    global myLocation
     currID = globalCurrOtherUserID
     sql_select_query = 'SELECT profile_picture FROM user_profile WHERE User_ID = "' + str(currID) + '" ;'
     print(sql_select_query)
@@ -187,10 +185,9 @@ def profile_page(): #name of function and name of route do not have to match
     result = mycursor.fetchall()
     profile_picture = result[0][0]
     profile_picture = write_file(profile_picture, "photo")
+    print(profileInfo)
     # print(profile_picture)
-    return render_template('profiles.html', content = profileInfo, picture = profile_picture)
-
-
+    return render_template('profiles.html', content = profileInfo, picture = profile_picture, time=get_distance(myLocation + " New Brunswick, NJ", theirLocation + " New Brunswick, NJ"))
 
 @app.route('/chat')
 def chat(): #name of function and name of route do not have to match
@@ -200,6 +197,7 @@ def chat(): #name of function and name of route do not have to match
     print(sql_select_query)
     mycursor.execute(sql_select_query)
     matches = mycursor.fetchall()
+    matches = [matches]
     return render_template('chat.html', content = matches)
 
 
