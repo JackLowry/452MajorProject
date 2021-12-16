@@ -41,7 +41,7 @@ def optimize_delivery(curr_r, curr_c):
     return total_time
 
 
-mydb = mysql.connector.connect(host = "localhost", user = "root", passwd = "3072", database ="RUDownBad_Database") #connect to database, bad practive since problems with multiple connecctions and errors can occur, but fine for single user only
+mydb = mysql.connector.connect(host = "localhost", user = "root", passwd = "1234", database ="RUDownBad_Database") #connect to database, bad practive since problems with multiple connecctions and errors can occur, but fine for single user only
 mycursor = mydb.cursor()
 
 
@@ -117,7 +117,7 @@ def filter(): #name of function and name of route do not have to match
         print(sex)
         school = request.form.get('school')
         print(school)
-        sql_select_query = 'SELECT username, campus, residence, age, gender, year, sexual_orientation, major, bio, school, User_ID FROM user_profile WHERE campus = "' + str(campus) + '" and gender = "' + str(gender) + '" and year = "' + str(year) + '" and sexual_orientation = "' + str(sex) + '" and school = "' + str(school) + '" ORDER BY RAND() LIMIT 1;'
+        sql_select_query = 'SELECT username, campus, residence, age, gender, year, sexual_orientation, major, bio, school, User_ID FROM User_Profile WHERE campus = "' + str(campus) + '" and gender = "' + str(gender) + '" and year = "' + str(year) + '" and sexual_orientation = "' + str(sex) + '" and school = "' + str(school) + '" ORDER BY RAND() LIMIT 1;'
         print(sql_select_query)
         mycursor.execute(sql_select_query)
         result = mycursor.fetchall()
@@ -166,7 +166,7 @@ def profile_page(): #name of function and name of route do not have to match
         school = globalSchool
         gender = globalGender
         year = globalYear
-        sql_select_query = 'SELECT username, campus, residence, age, gender, year, sexual_orientation, major, bio, school, User_ID FROM user_profile WHERE campus = "' + str(campus) + '" and gender = "' + str(gender) + '" and year = "' + str(year) + '" and sexual_orientation = "' + str(sex) + '" and school = "' + str(school) + '" ORDER BY RAND() LIMIT 1;'
+        sql_select_query = 'SELECT username, campus, residence, age, gender, year, sexual_orientation, major, bio, school, User_ID FROM User_Profile WHERE campus = "' + str(campus) + '" and gender = "' + str(gender) + '" and year = "' + str(year) + '" and sexual_orientation = "' + str(sex) + '" and school = "' + str(school) + '" ORDER BY RAND() LIMIT 1;'
         print(sql_select_query)
         mycursor.execute(sql_select_query)
         result = mycursor.fetchall()        
@@ -181,7 +181,7 @@ def profile_page(): #name of function and name of route do not have to match
     profileInfo = globalCurrInfo
 
     currID = globalCurrOtherUserID
-    sql_select_query = 'SELECT profile_picture FROM user_profile WHERE User_ID = "' + str(currID) + '" ;'
+    sql_select_query = 'SELECT profile_picture FROM User_Profile WHERE User_ID = "' + str(currID) + '" ;'
     print(sql_select_query)
     mycursor.execute(sql_select_query)
     result = mycursor.fetchall()
@@ -196,7 +196,7 @@ def profile_page(): #name of function and name of route do not have to match
 def chat(): #name of function and name of route do not have to match
     global currentUser
     currID = currentUser
-    sql_select_query = 'SELECT * from likes WHERE User_ID = "' + str(currID) + '" ;'
+    sql_select_query = 'SELECT * from Likes WHERE User_ID = "' + str(currID) + '" ;'
     print(sql_select_query)
     mycursor.execute(sql_select_query)
     matches = mycursor.fetchall()
