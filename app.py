@@ -164,12 +164,7 @@ def profile_page(): #name of function and name of route do not have to match
         school = globalSchool
         gender = globalGender
         year = globalYear
-<<<<<<< HEAD
         sql_select_query = 'SELECT username, campus, residence, age, gender, year, sexual_orientation, major, bio, school, User_ID FROM user_profile WHERE campus = "' + str(campus) + '" and gender = "' + str(gender) + '" and year = "' + str(year) + '" and sexual_orientation = "' + str(sex) + '" and school = "' + str(school) + '" ORDER BY RAND() LIMIT 1;'
-=======
-        sql_select_query = 'SELECT username, campus, residence, age, gender, year, sexual_orientation, major, bio, school, User_ID FROM User_Profile WHERE campus = "' + str(campus) + '" and gender = "' + str(gender) + '" and year = "' + str(year) + '" and sexual_orientation = "' + str(sex) + '" and school = "' + str(school) + '" ORDER BY RAND() LIMIT 1;'
-        print(sql_select_query)
->>>>>>> ba94f94986578282a4440bc95a127f01c7b95ff6
         mycursor.execute(sql_select_query)
         result = mycursor.fetchall()        
         global globalCurrInfo 
